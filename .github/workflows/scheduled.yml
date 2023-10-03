@@ -1,0 +1,29 @@
+name: daily-commit
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  plant_the_grass:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ secrets.token }}
+
+      - name: Run script
+        run: |
+          chmod +x ./scripts/commit.sh
+          ./scripts/commit.sh
+        shell: bash
+
+      - name: Commit And push
+        run: |
+          git add .
+          git config --global user.email "seungseopahn@gmail.com"
+          git config --global user.name "seung-seop-ahn"
+          git commit -am "plant new grass 🍀"
+          git push
